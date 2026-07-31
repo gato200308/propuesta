@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Alguien Especial | Nuestra Historia</title>
+    
+    <!-- Google Fonts: Dancing Script, Playfair Display y Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;0,800;1,400&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Estilos CSS Personalizados -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Canvas de fondo para partículas y corazones -->
+    <canvas id="canvas-bg"></canvas>
+
+
+    <!-- ==================== PANTALLA 1: BIENVENIDA ==================== -->
+    <section id="welcome-screen" class="screen active">
+        <div class="glass-card welcome-card text-center fade-in">
+            <div class="heart-pulse-container">
+                <i class="fas fa-heart heart-pulse-icon"></i>
+            </div>
+            <h1 class="font-love title-main">Hola, mi amor...</h1>
+            <p class="description-text">
+                He preparado algo muy especial para ti. Un pequeño recorrido por lo que significa tenerte en mi vida. ¿Me acompañas?
+            </p>
+            <button id="btn-enter" class="btn btn-primary btn-lg shine-effect">
+                <i class="fas fa-key"></i> Entrar a nuestra historia
+            </button>
+        </div>
+    </section>
+
+    <!-- ==================== PANTALLA 2: CALENDARIO DE 8 DÍAS ==================== -->
+    <section id="main-screen" class="screen hidden">
+        <div class="container py-4">
+            <header class="text-center mb-5">
+                <span class="badge">Nuestra Línea del Tiempo</span>
+                <h2 class="font-love title-section">8 Días de Recuerdos</h2>
+                <p class="subtitle-text">Abre cada carta en orden. Al llegar al último día, descubrirás una sorpresa especial.</p>
+            </header>
+
+            <!-- Cuadrícula del Calendario -->
+            <div class="calendar-grid" id="calendar-grid">
+                <!-- Las tarjetas de los días se generarán dinámicamente con JavaScript -->
+            </div>
+
+            <!-- Botón de Propuesta (se desbloquea al abrir el día 7) -->
+            <div id="proposal-trigger-container" class="text-center mt-5 hidden-trigger">
+                <button id="btn-goto-proposal" class="btn btn-proposal glow-gold">
+                    <i class="fas fa-envelope-open-text animate-bounce"></i> Tengo una pregunta para ti...
+                </button>
+            </div>
+            
+
+        </div>
+    </section>
+
+    <!-- ==================== MODAL DE DETALLE DE CARTA ==================== -->
+    <div id="letter-modal" class="modal-overlay hidden">
+        <div class="modal-card glass-card max-width-md scale-up">
+            <button id="btn-close-modal" class="modal-close" aria-label="Cerrar Carta">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="modal-body">
+                <div class="modal-header-decor">
+                    <span id="modal-day-badge" class="badge">Día X</span>
+                </div>
+                <h3 id="modal-title" class="font-love modal-title-text">Título de la Carta</h3>
+                
+                <div class="modal-image-container">
+                    <img id="modal-img" src="" alt="Foto del recuerdo" class="modal-img">
+                    <div class="modal-img-overlay"></div>
+                </div>
+
+                <div class="modal-content-scroll">
+                    <p id="modal-message" class="modal-message-text">
+                        Aquí irá el texto detallado de la carta.
+                    </p>
+                    <div id="countdown-container" class="countdown-timer hidden"></div>
+                </div>
+                
+                <div class="modal-footer-decor">
+                    <p id="modal-phrase" class="font-love modal-phrase-text">"Una frase de amor bonita..."</p>
+                    <p id="modal-signature" class="modal-signature-text">— Santi</p>
+                </div>
+
+                <div class="text-center mt-4">
+                    <button id="btn-read-done" class="btn btn-primary">
+                        <i class="fas fa-heart"></i> Lo he leído
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== PANTALLA 3: LA PROPUESTA ==================== -->
+    <section id="proposal-screen" class="screen hidden">
+        <div class="glass-card proposal-card text-center">
+            <!-- Botón para regresar al calendario -->
+            <button id="btn-back-to-calendar" class="btn-back" aria-label="Volver al Calendario">
+                <i class="fas fa-arrow-left"></i> Volver al Calendario
+            </button>
+
+            <div class="decor-hearts">
+                <i class="fas fa-heart floating-heart-1"></i>
+                <i class="fas fa-heart floating-heart-2"></i>
+                <i class="fas fa-heart floating-heart-3"></i>
+            </div>
+            
+            <h2 class="font-love title-proposal">Mi pregunta más importante...</h2>
+            
+            <div class="proposal-question-box">
+                <p class="proposal-intro">Después de recorrer todos estos hermosos momentos a tu lado, solo queda una cosa por decir...</p>
+                <h1 class="proposal-question">¿Quieres ser mi pareja?</h1>
+            </div>
+
+            <div class="proposal-buttons" id="proposal-buttons-container">
+                <button id="btn-yes" class="btn btn-yes btn-lg">
+                    <i class="fas fa-heart"></i> ¡SÍ, QUIERO!
+                </button>
+                <button id="btn-no" class="btn btn-no btn-lg">
+                    No <i class="fas fa-face-frown"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== PANTALLA 4: CELEBRACIÓN (SÍ) ==================== -->
+    <section id="celebration-screen" class="screen hidden">
+        <div class="glass-card celebration-card text-center fade-in">
+            <div class="celebration-badge-container">
+                <div class="heart-container-success">
+                    <i class="fas fa-heart heart-success"></i>
+                </div>
+            </div>
+            
+            <h1 class="font-love title-celebration">¡SÍ! ¡ME HACES EL MÁS FELIZ! ❤️</h1>
+            
+            <div class="celebration-image-container">
+                <!-- Imagen bonita de celebración. Puedes cambiarla por una de los dos. -->
+                <img src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&q=80&w=800" alt="Nosotros" class="celebration-img">
+                <div class="heart-sparkles"></div>
+            </div>
+
+            <div class="celebration-message">
+                <p>Hoy comienza un nuevo y hermoso capítulo en nuestra historia.</p>
+                <p class="font-love signature-text">Prometo cuidarte, hacerte sonreír todos los días y amarte con todo mi corazón.</p>
+            </div>
+            
+            <div class="celebration-date" id="celebration-current-date">
+                <!-- Se llenará con la fecha de hoy con JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Scripts de la Aplicación -->
+    <script src="app.js"></script>
+</body>
+</html>
