@@ -5,12 +5,12 @@
 // 1. CONFIGURACIÓN DEL CONTENIDO (Personalizable por el usuario)
 const CONFIG = {
     nombreChica: "", // Puedes dejarlo vacío si prefieres no usar un nombre fijo
-    // URL del servidor que recibe los recibos de lectura (dejar vacío para usar ruta relativa
-    // cuando el cliente y el bridge estén desplegados en el mismo dominio)
-    serverUrl: '',
-    // Si true, en vez de usar el bridge POST, abrimos una URL prellenada de GitHub
-    // para que el issue lo cree la persona que haga clic (autor será su cuenta GitHub).
-    useIssueLink: true,
+    // URL del servidor que recibe los recibos de lectura (usa tu despliegue en Render)
+    serverUrl: 'https://propuesta-icdq.onrender.com',
+    // Si false, el cliente enviará automáticamente un POST al bridge en Render
+    // que creará el issue en GitHub. Esto evita que la persona tenga que
+    // crear el issue manualmente.
+    useIssueLink: false,
     dias: [
         {
             dia: 1,

@@ -3,6 +3,7 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
+const SKIP_TOKEN_VALIDATION = process.env.SKIP_TOKEN_VALIDATION === 'true';
 
 app.use(express.json());
 
@@ -44,44 +45,50 @@ app.post('/api/read', async (req, res) => {
   const userAgent = req.headers['user-agent'] || 'desconocido';
   const body = `Se registró la lectura del día ${day}.\n\nLector: ${reader || 'anónimo'}\nFecha: ${new Date().toISOString()}\n\nMeta:\n- IP: ${requesterIp}\n- User-Agent: ${userAgent}`;
 
-  // Validar token secreto (tokens.json)
-  let tokens = {};
-  const TOKENS_PATHS = [
-    path.join(__dirname, 'tokens.json'),
-    path.join('/etc/secrets', 'tokens.json')
-  ];
-  for (const p of TOKENS_PATHS) {
+  // Validación opcional de tokens por día. En despliegues donde quieras
+  // evitar el proceso manual de crear issues, puedes activar
+  // SKIP_TOKEN_VALIDATION=true en las variables de entorno de Render.
+  if (!SKIP_TOKEN_VALIDATION) {
+    let tokens = {};
+    const TOKENS_PATHS = [
+      path.join(__dirname, 'tokens.json'),
+      path.join('/etc/secrets', 'tokens.json')
+    ];
+    for (const p of TOKENS_PATHS) {
+      try {
+        if (fs.existsSync(p)) {
+          const raw = fs.readFileSync(p, 'utf8');
+          tokens = JSON.parse(raw);
+          break;
+        }
+      } catch (e) {
+        // ignore
+      }
+    }
+
+    const providedKey = req.body.key || req.query.key;
+    if (!tokens || !tokens[day]) {
+      return res.status(403).json({ error: 'No token configured for this day' });
+    }
+    if (!providedKey || providedKey !== tokens[day].token) {
+      return res.status(403).json({ error: 'Invalid or missing token for this day' });
+    }
+    if (tokens[day].used) {
+      return res.status(409).json({ error: 'Token already used' });
+    }
+
+    // Marcar token como usado (si el archivo está en el repo local)
     try {
-      if (fs.existsSync(p)) {
-        const raw = fs.readFileSync(p, 'utf8');
-        tokens = JSON.parse(raw);
-        break;
+      tokens[day].used = true;
+      const localPath = path.join(__dirname, 'tokens.json');
+      if (fs.existsSync(localPath)) {
+        fs.writeFileSync(localPath, JSON.stringify(tokens, null, 2));
       }
     } catch (e) {
-      // ignore
+      console.warn('Could not persist token usage:', e.message);
     }
-  }
-
-  const providedKey = req.body.key || req.query.key;
-  if (!tokens || !tokens[day]) {
-    return res.status(403).json({ error: 'No token configured for this day' });
-  }
-  if (!providedKey || providedKey !== tokens[day].token) {
-    return res.status(403).json({ error: 'Invalid or missing token for this day' });
-  }
-  if (tokens[day].used) {
-    return res.status(409).json({ error: 'Token already used' });
-  }
-
-  // Marcar token como usado (si el archivo está en el repo local)
-  try {
-    tokens[day].used = true;
-    const localPath = path.join(__dirname, 'tokens.json');
-    if (fs.existsSync(localPath)) {
-      fs.writeFileSync(localPath, JSON.stringify(tokens, null, 2));
-    }
-  } catch (e) {
-    console.warn('Could not persist token usage:', e.message);
+  } else {
+    console.log('SKIP_TOKEN_VALIDATION enabled — accepting public read receipts');
   }
 
   try {
