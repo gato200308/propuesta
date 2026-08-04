@@ -4,71 +4,191 @@
 
 // 1. CONFIGURACIÓN DEL CONTENIDO (Personalizable por el usuario)
 const CONFIG = {
-    nombreChica: "Mi Dama", // Nombre de tu chica
+    nombreChica: "", // Puedes dejarlo vacío si prefieres no usar un nombre fijo
     dias: [
         {
             dia: 1,
-            fechaDesbloqueo: "2026-08-18", // Se desbloquea el 18 de Agosto
-            titulo: "18 de agosto de 2026 | El comienzo de lo nuestro",
+            fechaDesbloqueo: "2026-08-03",
+            titulo: "3 de agosto de 2026 | Hoy te recuerdo con todo mi corazón",
             imagen: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&q=80&w=600",
-            mensaje: "Mi Dama, hoy empieza esta cuenta regresiva que no solo marca días, sino la forma en que mi corazón decidió tomarte en serio. A veces pienso en lo improbable que fue todo: un primer cruce por Tinder, luego WhatsApp, después la recocha que nos hizo reír, y finalmente esa sinceridad bonita con la que ambos entendimos que ya no queríamos quedarnos en lo superficial. Me gusta recordar ese inicio porque ahí está la verdad más linda de lo nuestro: empezamos entre bromas, pero terminamos hablándonos con el alma.\n\nDesde Bogotá hasta Villavicencio, quiero que sepas que no estoy jugando contigo ni con lo que siento. Mi Dama, yo sí quiero hacer las cosas bien, despacio si hace falta, pero con intención real, con cuidado, con respeto y con amor del bueno. Esta primera carta es mi manera de decirte que no me intimida la distancia cuando lo que me mueve por dentro es tan sincero. Si algo nació entre nosotros, quiero ayudar a que crezca bonito.",
-            frase: "El amor verdadero no improvisa: se construye con intención."
+            mensaje: "Mi amor, hoy quiero decirte algo que siento con mucha claridad: te pienso, te extraño y te quiero con una fuerza que no sé explicar bien, pero sí sé que es real. Hay días en que todo parece pasar rápido y a la vez muy pesado, pero cuando pienso en ti, algo dentro de mí se calma. No sé si es magia, suerte o simplemente que tú llegaste a mi vida en el momento exacto, pero sí sé que contigo se siente distinto.\n\nNo necesito que todo sea perfecto para saber que algo bonito está creciendo entre nosotros. Me gusta lo que siento cuando te pienso, me gusta cómo me haces bien sin hacer mucho, y me gusta aún más saber que lo que hay entre los dos no es casual. Hay algo profundo ahí, algo que me hace sonreír cuando menos lo espero.",
+            frase: "A veces el corazón reconoce lo importante antes de que la mente lo entienda."
         },
         {
             dia: 2,
-            fechaDesbloqueo: "2026-08-19", // Se desbloquea el 19 de Agosto
-            titulo: "19 de agosto de 2026 | La risa que nos une",
+            fechaDesbloqueo: "2026-08-04",
+            titulo: "4 de agosto de 2026 | Tu voz me cambia el día",
             imagen: "https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&q=80&w=600",
-            mensaje: "Mi Dama, hay algo en la forma en que hablamos que me alegra incluso en los días pesados. Tu risa, tus ocurrencias, tu manera tan tuya de responderme, de seguirme la corriente y de hacer que cualquier conversación sencilla se vuelva especial, son cosas que yo no me paso por alto. Contigo no siento que tenga que fingir nada; al contrario, siento que puedo ser yo, con toda mi espontaneidad, y eso vale demasiado. Mi Dama, esa complicidad que tenemos es una de las cosas que más me encantan de ti.\n\nY no solo me gustas por lo que dices, sino por la energía que dejas en mí después de hablar. Hay personas que entran a la vida de uno y la ordenan un poco; tú entraste y además le pusiste alegría. A la distancia, sigues siendo capaz de cambiarme el día, de sacarme una sonrisa y de recordarme que lo bonito también puede sentirse por mensajes, audios y silencios que hablan bien. Mi Dama, contigo la risa también se volvió una forma de enamorarme.",
-            frase: "Tu risa tiene la costumbre de volver hermoso lo simple."
+            mensaje: "Mi amor, hay algo en ti que me hace sentir que el día puede ser mejor aunque no haya pasado nada especial. Tu voz, tus palabras, la forma en que me escuchas y hasta esa manera tan tuya de decir las cosas hacen que todo se vuelva más ligero. Con vos, una llamada simple se convierte en un momento bonito, en un pequeño refugio, en un recuerdo que uno quiere guardar.\n\nY me doy cuenta de que lo que siento por ti no es solo una emoción bonita; es algo que me acompaña, que me hace sonreír y que me hace querer estar más cerca de vos. Porque cuando hablo contigo, siento que no estoy perdiendo el tiempo, sino construyendo algo que vale la pena.",
+            frase: "Tu voz no solo me habla; me devuelve la paz."
         },
         {
             dia: 3,
-            fechaDesbloqueo: "2026-08-20", // Se desbloquea el 20 de Agosto
-            titulo: "20 de agosto de 2026 | Tu belleza completa",
+            fechaDesbloqueo: "2026-08-05",
+            titulo: "5 de agosto de 2026 | Lo simple contigo se vuelve especial",
             imagen: "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?auto=format&fit=crop&q=80&w=600",
-            mensaje: "Mi Dama, no voy a esconder lo que siento: me deslumbras. Me fascina tu belleza completa, la que se ve y la que no se explica fácil. Me encantas por tu presencia, por tu forma de moverte, por la elegancia natural que tienes y por ese cuerpo que, siendo honesto, me provoca admiración, deseo y ternura al mismo tiempo. Eres hermosa de una manera que no se reduce a una mirada; eres de esas mujeres que se sienten antes de explicarse, y desde el primer momento me dejaste claro que había algo en ti que me iba a quedar rondando en la cabeza y en el corazón.\n\nPero lo que más me gusta, Mi Dama, es que tu belleza no vive sola. Está acompañada de personalidad, de carácter, de una manera de ser que hace que todo en ti tenga más peso, más sentido y más encanto. Lo físico me atrae profundamente, sí, pero lo que me termina de rendir ante ti es que esa belleza viene con esencia, con autenticidad y con una luz que no necesita permiso para notarse. Si alguna vez dudaste de lo mucho que puedes impactar a alguien, quiero que esta carta te lo diga con claridad: tú sí me deslumbraste, y todavía lo sigues haciendo.",
-            frase: "Eres belleza, pero también esencia; y eso me deja sin defensa."
+            mensaje: "Mi amor, me encanta pensar en lo fácil que se vuelve todo cuando estás tú. No hace falta que pase algo extraordinario para que un día se vuelva bonito; a veces basta con una conversación, un mensaje, una llamada o incluso un silencio compartido que de pronto se siente lleno de cariño. Contigo, hasta las cosas más simples me parecen importantes.\n\nY eso es lo que más valoro: que lo nuestro no necesita ser complicado para ser hermoso. Me gusta cómo me haces sentir, me gusta cómo me haces sonreír y me gusta la idea de seguir creando cosas pequeñas pero verdaderas con vos. Porque a veces eso es lo que más dura: los momentos simples, los que se viven con el corazón y no con la prisa.",
+            frase: "Lo simple, cuando se vive con amor, se vuelve inolvidable."
         },
         {
             dia: 4,
-            fechaDesbloqueo: "2026-08-21", // Se desbloquea el 21 de Agosto
-            titulo: "21 de agosto de 2026 | Venciendo la distancia",
+            fechaDesbloqueo: "2026-08-06",
+            titulo: "6 de agosto de 2026 | Aunque el día sea pesado",
             imagen: "https://images.unsplash.com/photo-1464746133101-a2c3f88e0dd9?auto=format&fit=crop&q=80&w=600",
-            mensaje: "Mi Dama, la distancia entre Bogotá y Villavicencio existe, sí, pero nunca la he sentido como una pared. La he sentido como una prueba, como un tramo que vale la pena cruzar cuando lo que hay del otro lado importa de verdad. A mí no me asusta que haya kilómetros; me asusta más la idea de no intentar lo suficiente por alguien que me mueve tanto. Y contigo, Mi Dama, intento más porque siento más, porque me importas más, porque lo que estamos construyendo merece esfuerzo y no excusas.\n\nSi algo me nace contigo es demostrarte con hechos que esto no se queda en palabras bonitas. Quiero que veas en mí a un hombre dispuesto a sostener lo que dice, a viajar con intención, a escribir, a insistir, a cuidar, a estar presente incluso cuando no pueda estar físicamente al lado tuyo. Mi Dama, la distancia no me hace dudar; me hace tener más claro que quiero lucharla contigo, no contra ti. Si te sigo pensando desde Bogotá, es porque mi corazón ya aprendió el camino hasta Villavicencio.",
-            frase: "La distancia no me detiene; me obliga a quererte con más intención."
+            mensaje: "Mi amor, hay días en los que todo se siente pesado, cansado y un poco confuso. Pero también hay días en los que una sola idea de ti me cambia el ánimo. Me hace pensar que quizá no todo en la vida tiene que ser perfecto para que algo sea bonito. A veces basta con recordar que hay alguien que te hace bien, alguien que te acompaña aunque no esté físicamente cerca.\n\nY eso eres tú para mí. No importa si el día fue difícil, si el tiempo no alcanzó o si todo salió mal. Pensarte me recuerda que hay algo bueno en medio de todo, algo tierno, algo real, algo que me hace querer seguir adelante con más calma y más amor.",
+            frase: "Algunas personas no arreglan la vida, pero sí la hacen sentir más liviana."
         },
         {
             dia: 5,
-            fechaDesbloqueo: "2026-08-22", // Se desbloquea el 22 de Agosto
-            titulo: "22 de agosto de 2026 | Paciencia y detalles",
+            fechaDesbloqueo: "2026-08-07",
+            titulo: "7 de agosto de 2026 | Quiero hacer tiempo para vos",
             imagen: "https://images.unsplash.com/photo-1501908731398-23591973b087?auto=format&fit=crop&q=80&w=600",
-            mensaje: "Mi Dama, cuando uno quiere construir algo serio, maduro y bonito, entiende que el amor no vive solo de emoción: también se sostiene con paciencia, detalles y decisión. Por eso cada carta, cada mensaje, cada gesto mío hacia ti no es un adorno; es un ladrillo pequeño, pero firme, de algo que quiero levantar con cuidado. No me interesa una historia improvisada. Me interesa una historia que se pueda mirar con orgullo con el paso del tiempo, una historia donde ambos sepamos que lo que sentimos fue atendido con respeto y con verdad.\n\nMi Dama, yo creo en los detalles porque ahí se nota quién ama de verdad. Una palabra en el momento justo, una carta pensada con calma, una intención sincera, una manera de escuchar y de estar: todo eso también construye futuro. Y si hoy te escribo así es porque quiero que sientas que lo nuestro tiene espacio para crecer, para madurar y para hacerse fuerte sin perder la ternura. No quiero prometerte perfección, pero sí constancia, presencia y ganas reales de hacerte sentir elegida.",
-            frase: "Los detalles también son una forma de decir para siempre."
+            mensaje: "Mi amor, quiero que sepas que me importa mucho hacer tiempo para ti, porque tú no eres un detalle pasajero en mi vida, sino alguien que ocupa un lugar muy especial en mi corazón. Quiero que haya espacio para los dos, para hablar sin prisa, para escuchar lo que te pasa, para reír, para mirar hacia adelante y para construir algo que nos haga bien. No quiero que esto se quede en palabras bonitas; quiero que se vea en la forma en que elijo estar, en cómo cuido lo que siento y en cómo sigo buscando momentos para acercarme a vos aunque la distancia esté presente.\n\nPorque a veces lo más bonito no es algo grande; es un momento compartido, una llamada, un mensaje, una conversación que nos haga sentir que lo que tenemos es real y merece la pena cuidar.",
+            frase: "El tiempo también es una forma de decir te quiero."
         },
         {
             dia: 6,
-            fechaDesbloqueo: "2026-08-23", // Se desbloquea el 23 de Agosto
-            titulo: "23 de agosto de 2026 | La antesala de tu día",
+            fechaDesbloqueo: "2026-08-08",
+            titulo: "8 de agosto de 2026 | Esa conexión que no se rompe",
             imagen: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&q=80&w=600",
-            mensaje: "Mi Dama, ya se siente el aire distinto porque se acerca una fecha demasiado especial: tu día. Y yo, que no soy de guardar lo que siento cuando algo me importa de verdad, confieso que llevo la ilusión prendida desde hace rato. Me emociona pensar que estoy a punto de celebrar otra vuelta al sol tuya, otro capítulo de tu vida, otro motivo para agradecer que existas. Mi Dama, hay personas que nacen y pasan por el mundo; tú, en cambio, haces que el mundo se sienta más bonito para quienes tenemos el privilegio de quererte.\n\nEsta carta es como una respiración antes del momento grande: llena de expectativa, de cariño y de una alegría que no me cabe del todo en el pecho. Quiero que sepas que me emociona celebrarte, honrar tu vida y recordarte que eres importante, valiosa y profundamente querida. No solo por lo que eres conmigo, sino por todo lo que eres por ti misma. Mi Dama, se acerca tu día y yo ya estoy sintiendo la felicidad de acompañarlo contigo.",
-            frase: "Se acerca tu día y yo ya estoy celebrándolo con el corazón."
+            mensaje: "Mi amor, hay algo en nosotros que no se puede fingir ni forzar. Esa conexión que aparece cuando hablamos, cuando nos entendemos sin necesidad de explicarlo todo, cuando el silencio no incomoda y cuando una simple conversación se vuelve importante. No importa si estamos cerca o lejos, hay algo ahí que sigue existiendo y que me hace sentir que lo que hay entre los dos es real.\n\nY me gusta pensar que eso también es una señal. Una señal de que lo que sentimos no es superficial ni momentáneo. Es algo que crece de a poquito, con sinceridad, con ternura y con ganas de cuidar lo que ya empieza a ser muy bonito.",
+            frase: "A veces el alma reconoce a la persona correcta incluso antes de que el corazón lo acepte."
         },
         {
             dia: 7,
-            fechaDesbloqueo: "2026-08-24", // Se desbloquea el 24 de Agosto
-            titulo: "24 de agosto de 2026 | La víspera",
+            fechaDesbloqueo: "2026-08-09",
+            titulo: "9 de agosto de 2026 | Quiero llegar lejos contigo",
             imagen: "https://images.unsplash.com/photo-1533227260828-531465922380?auto=format&fit=crop&q=80&w=600",
-            mensaje: "Mi Dama, la víspera de tu cumpleaños me encuentra pensando en todo lo que cambió desde que apareciste. Cambió mi manera de esperar mensajes, mi forma de imaginar el futuro, mi emoción por las pequeñas cosas y, sobre todo, mi forma de entender que alguien puede llegar a la vida de uno y dejarla más viva. Desde que te conozco, todo tiene un poco más de color, más de sentido y más de intención. Mi Dama, hay encuentros que no parecen tan grandes al principio, pero luego uno descubre que estaban reacomodando el corazón desde el primer momento.\n\nMañana no solo celebraré que cumples años; celebraré que existes, que eres tú, que el mundo te puso en mi camino y que, de alguna manera, me enseñaste a querer con más verdad. Me ilusiona imaginar la alegría de mañana, la emoción de decirte lo mucho que significas, y la manera en que quiero hacerte sentir especial, vista y profundamente amada. Mi Dama, antes de que llegue tu día, quiero dejar escrito que para mí ya eres motivo suficiente de celebración.",
-            frase: "La víspera de tu cumpleaños ya se siente como una promesa hermosa."
+            mensaje: "Mi amor, a veces pienso en el futuro y no puedo evitar imaginar un camino donde estemos construyendo algo bonito, algo de verdad. No necesito que todo sea perfecto para saber que lo que siento por ti es serio, profundo y muy mío. Lo que quiero es llegar lejos contigo, pasar mucho tiempo juntos, vivir historias que nos recuerden que el amor no solo se habla, también se construye.\n\nY si hay algo que sé con claridad es que yo sí quiero que esto siga creciendo. Quiero planes, conversaciones, viajes, momentos tranquilos, risas, abrazos y un montón de cosas que nos hagan sentir vivos. Porque contigo no me imagino una historia corta ni superficial; me imagino una historia que se sostiene, que madura y que se vuelve cada vez más hermosa.",
+            frase: "Quiero un futuro donde tu nombre se mezcle con el mío."
         },
         {
             dia: 8,
-            fechaDesbloqueo: "2026-08-25", // Se desbloquea el 25 de Agosto (Cumpleaños y Propuesta)
-            titulo: "¡Feliz Cumpleaños y Algo Más! 🎂❤️",
+            fechaDesbloqueo: "2026-08-10",
+            titulo: "10 de agosto de 2026 | Me haces querer ser mejor",
             imagen: "https://images.unsplash.com/photo-1537907690979-ee8e01276184?auto=format&fit=crop&q=80&w=600",
-            mensaje: "Mi Dama, hoy sí es tu día. Hoy celebro tu vida con toda el alma, porque naciste tú y con eso bastó para volver importante una fecha, un recuerdo y una ilusión. Feliz cumpleaños, Mi Dama. Ojalá pudieras ver con la intensidad con la que te pienso, con cuánto cariño admiro tu existencia, con qué ternura me nace desearte alegría, paz, salud, plenitud y sueños cumplidos. Eres una mujer inmensamente especial, y no lo digo solo porque me encantas, sino porque de verdad siento que tu vida tiene una luz que merece ser celebrada como algo grande, hermoso e irrepetible.\n\nSi he escrito estas cartas una a una es porque quería que llegaras a este momento sabiendo algo esencial: lo que siento por ti no es pasajero ni pequeño. Me gustas profundamente, me importas de una forma seria y bonita, y quiero seguir construyendo contigo algo que valga la pena cuidar. Por eso, en este día tan importante, quiero hacerte mi propuesta con el corazón abierto y sin rodeos: Mi Dama, ¿quieres ser mi novia, mi pareja formal, y permitirme caminar contigo esta historia como algo serio, bonito y nuestro? Quiero elegirte con intención, con respeto y con amor. Quiero que me elijas también, si así lo siente tu corazón. Feliz cumpleaños, Mi Dama, y gracias por existir en mi vida.",
-            frase: "Feliz cumpleaños, Mi Dama: hoy celebro tu vida y te elijo con el corazón abierto."
+            mensaje: "Mi amor, tú me inspiras de una manera que pocas personas han logrado. No porque me llenes de palabras bonitas, sino porque me haces querer ser mejor, más atento, más sincero y más constante. Cuando pienso en ti, siento que también quiero cuidar mejor lo que tenemos, ser más presente y hacer que lo nuestro se vuelva un espacio seguro, lleno de cariño y de verdad.\n\nSé que el camino no siempre será fácil, pero tampoco quiero que eso me asuste. Lo que siento por ti me da la confianza de que si decidimos seguir, podremos hacerlo con respeto, con paciencia y con mucha ternura. Y eso me hace sentir que todo lo que estamos construyendo tiene un valor muy grande, aunque todavía esté creciendo.",
+            frase: "Amarte me enseña a querer mejor, más profundo y con más intención."
+        },
+        {
+            dia: 9,
+            fechaDesbloqueo: "2026-08-11",
+            titulo: "11 de agosto de 2026 | La distancia no nos separa",
+            imagen: "https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&q=80&w=600",
+            mensaje: "Mi amor, a veces la distancia me hace pensar en lo grande que puede ser el corazón cuando realmente quiere. Porque aunque estemos lejos, lo que siento por ti no se ha ido, no se ha enfriado y tampoco se ha vuelto menos intenso. Al contrario, me hace valorar más lo que tenemos y me recuerda que el amor no necesita estar siempre cerca para ser real.\n\nQuiero que este sentimiento siga creciendo, aunque a veces nos cueste encontrar tiempo o aunque los días se vuelvan complicados. Lo importante es que no perdamos esa conexión tan bonita que existe entre nosotros. Que sigamos hablando, que sigamos encontrándonos en nuestras palabras, en nuestras llamadas y en esos momentos en los que uno piensa en el otro y siente que no está solo.",
+            frase: "Lo que es verdadero no se pierde por la distancia; se cuida con más amor."
+        },
+        {
+            dia: 10,
+            fechaDesbloqueo: "2026-08-12",
+            titulo: "12 de agosto de 2026 | Quiero crear momentos contigo",
+            imagen: "https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&q=80&w=600",
+            mensaje: "Mi amor, me encanta la idea de crear momentos únicos contigo. No necesariamente tienen que ser grandes, ni costosos, ni perfectos. Lo que importa es que sean nuestros, que tengan nuestra energía, nuestra forma de hablar, nuestras risas, nuestros silencios y ese cariño que no necesita explicación. Hay una belleza especial en compartir cosas simples y convertirlas en recuerdos inolvidables.\n\nQuiero que cada vez que pensemos en lo que vamos construyendo, recordemos que lo más bonito no solo está en lo que se dice, sino en lo que se comparte. Con el tiempo, esos momentos se vuelven parte de nosotros. Y yo quiero que haya muchos, muchísimo más, porque me encanta la idea de que nuestra historia siga teniendo su propia magia.",
+            frase: "Los mejores recuerdos no siempre son los más grandes, sino los más tuyos."
+        },
+        {
+            dia: 11,
+            fechaDesbloqueo: "2026-08-13",
+            titulo: "13 de agosto de 2026 | Tu presencia me cambia el día",
+            imagen: "https://images.unsplash.com/photo-1487412912498-0447578fcca8?auto=format&fit=crop&q=80&w=600",
+            mensaje: "Mi amor, no sabes cuánto me alegra saber que existes en mi vida de esa manera tan especial. Tu presencia, aunque sea a distancia, cambia las cosas. Cambia la forma en que veo el día, en que percibo el cansancio y en que encuentro un motivo para sonreír. Y eso es algo que llevo muy dentro, porque no es fácil encontrar a alguien que llegue tan profundo sin necesidad de estar siempre presente físicamente.\n\nContigo, incluso un día común se vuelve más bonito. Y eso me recuerda que el amor no siempre se siente en grandes demostraciones, sino en la manera en que alguien ocupa el corazón y lo ilumina desde adentro. Eso es lo que siento contigo, y por eso te quiero, te cuido y te llevo en mis pensamientos de una forma muy especial.",
+            frase: "Tú no solo llenas mis días; les cambias el color."
+        },
+        {
+            dia: 12,
+            fechaDesbloqueo: "2026-08-14",
+            titulo: "14 de agosto de 2026 | Te quiero cerca, aunque no te vea",
+            imagen: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=600",
+            mensaje: "Mi amor, hay días en los que te extraño más de lo que puedo explicar. No porque me falte algo grande, sino porque te siento importante en mi vida de una manera muy profunda. A veces pienso en lo mucho que me gustaría tenerte cerca, abrazarte, mirarte a los ojos y decirte en persona lo mucho que significas para mí.\n\nY aunque todavía no estamos en ese momento, ya siento que lo que hay entre nosotros es real. Hay algo bonito, tierno y persistente, algo que me hace querer estar más cerca, más presente y más sincero. Porque sí, te quiero, te extraño y me hace feliz saber que estás en mi vida.",
+            frase: "A veces extrañar es solo una forma de decir que ya te llevamos adentro."
+        },
+        {
+            dia: 13,
+            fechaDesbloqueo: "2026-08-15",
+            titulo: "15 de agosto de 2026 | Quiero que esto siga creciendo",
+            imagen: "https://images.unsplash.com/photo-1495567720989-7a082b3e0f02?auto=format&fit=crop&q=80&w=600",
+            mensaje: "Mi amor, hoy quiero decirte algo que llevo dentro con mucha claridad: quiero que esto siga creciendo. No quiero que se quede en una simple historia bonita o en unos pocos momentos especiales. Quiero que se vuelva algo sólido, algo que se cuide, que se valore y que aprenda a sostenerse incluso en los días más difíciles. Porque lo que siento por ti tiene un peso muy especial y no quiero tratarlo como algo pequeño o pasajero.\n\nQuiero construir contigo una historia que no tenga miedo de los cambios, ni de la distancia, ni del tiempo. Quiero que haya espacio para hablar, para escuchar, para demostrar amor con hechos y para seguir haciendo de lo nuestro algo que valga la pena. Y si lo hacemos con paciencia, con ternura y con honestidad, entonces sí, todo puede volverse mucho más hermoso de lo que imaginamos.",
+            frase: "El amor crece cuando se cuida con intención y con verdad."
+        },
+        {
+            dia: 14,
+            fechaDesbloqueo: "2026-08-16",
+            titulo: "16 de agosto de 2026 | Mi corazón ya te eligió",
+            imagen: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&q=80&w=600",
+            mensaje: "Mi amor, a veces me sorprende lo claro que se siente todo cuando pienso en ti. Mi corazón ya te eligió, y lo ha hecho de una manera que no se puede negar ni esconder. No necesito buscar excusas para decirte que te amo, porque cada vez que pienso en lo que somos y en lo que podríamos llegar a ser, siento que mi amor por ti es real, profundo y muy sincero.\n\nQuiero que lo que construyamos se vea reflejado en la forma en que nos cuidamos, en la manera en que hacemos espacio para el otro y en la forma en que seguimos eligiéndonos aunque el camino no siempre sea sencillo. Porque yo sí quiero que haya futuro para nosotros, y claro que quiero que haya tiempo para los dos, para nuestras conversaciones, nuestras llamadas, nuestros abrazos y todos esos momentos que nos hagan sentir que lo que compartimos vale muchísimo.",
+            frase: "Cuando el corazón elige, no necesita una razón perfecta para seguir."
+        },
+        {
+            dia: 15,
+            fechaDesbloqueo: "2026-08-17",
+            titulo: "17 de agosto de 2026 | La historia que quiero escribir contigo",
+            imagen: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&q=80&w=600",
+            mensaje: "Mi amor, hoy quiero dejarte una idea muy bonita en el corazón: quiero escribir una historia contigo. No una historia llena de promesas vacías, sino una llena de verdad, de paciencia, de complicidad y de amor. Quiero que cada día que pasemos juntos, aunque sea con pocas palabras o con mucha distancia, deje una huella bonita en lo que sentimos. Quiero que nuestros recuerdos tengan alma, que nuestras conversaciones tengan calor y que nuestro futuro se vea como un lugar en el que podamos ser nosotros mismos, tranquilos y enamorados.\n\nY si hay algo que sé con certeza, es que quiero que esta historia no se quede a medias. Quiero llegar lejos contigo, pasar mucho tiempo juntos, compartir momentos únicos y hacer que cada día cuente, aunque estemos lejos. Porque lo que hay entre nosotros ya no es solo una emoción; es una decisión de corazón, una forma de querer que sigue creciendo y que quiere seguir adelante.",
+            frase: "Quiero que nuestra historia se escriba con amor, tiempo y verdad."
+        },
+        {
+            dia: 16,
+            fechaDesbloqueo: "2026-08-18",
+            titulo: "18 de agosto de 2026 | Mi pregunta más importante",
+            imagen: "https://images.unsplash.com/photo-1537907690979-ee8e01276184?auto=format&fit=crop&q=80&w=600",
+            mensaje: "Mi amor, hoy quiero decirte algo que viene del corazón y que no quiero seguir ocultando: te amo con una profundidad que me sorprende a mí mismo. Te amo por lo que eres, por la manera en que me haces sentir, por la forma en que tu presencia ilumina mis días y por la conexión tan bonita que hemos construido sin importar la distancia. No importa si el tiempo pasa rápido, si los días se complican o si las circunstancias no siempre son fáciles; lo que siento por ti sigue siendo real, claro y muy fuerte.\n\nQuiero que sepas que no me importa recorrer un largo camino si es contigo. Quiero pasar mucho tiempo a tu lado, crear momentos únicos, sacar tiempo para los dos, hacer llamadas para vernos, hablar con esa conexión especial que tenemos y seguir construyendo algo hermoso. Si hoy te digo esto es porque quiero que sepas que te elijo, que te quiero y que quiero seguir adelante contigo, con amor, con respeto y con la esperanza de un futuro que sea nuestro. Mi amor, ¿quieres ser mi pareja y caminar conmigo esta historia, con todo lo bonito que aún nos espera?",
+            frase: "No importa la distancia ni el tiempo: si el corazón elige, el amor encuentra la manera."
+        },
+        {
+            dia: 17,
+            fechaDesbloqueo: "2026-08-19",
+            titulo: "19 de agosto de 2026 | La risa que nos une",
+            imagen: "https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&q=80&w=600",
+            mensaje: "Mi amor, hay algo en la forma en que hablamos que me alegra incluso en los días pesados. Tu risa, tus ocurrencias, tu manera tan tuya de responderme y de seguirme la corriente hacen que cualquier conversación sencilla se vuelva especial. Contigo no siento que tenga que fingir nada; al contrario, siento que puedo ser yo, con toda mi espontaneidad, y eso vale demasiado.\n\nY no solo me gustas por lo que dices, sino por la energía que dejas en mí después de hablar. Hay personas que entran a la vida de uno y la ordenan un poco; tú entraste y además le pusiste alegría. A la distancia, sigues siendo capaz de cambiarme el día, de sacarme una sonrisa y de recordarme que lo bonito también puede sentirse por mensajes, audios y silencios que hablan bien.",
+            frase: "Tu risa tiene la costumbre de volver hermoso lo simple."
+        },
+        {
+            dia: 18,
+            fechaDesbloqueo: "2026-08-20",
+            titulo: "20 de agosto de 2026 | Tu belleza completa",
+            imagen: "https://images.unsplash.com/photo-1490730141103-6cac27aaab94?auto=format&fit=crop&q=80&w=600",
+            mensaje: "Mi amor, no voy a esconder lo que siento: me deslumbras. Me fascina tu belleza completa, la que se ve y la que no se explica fácil. Me encantas por tu presencia, por tu forma de moverte, por la elegancia natural que tienes y por ese cuerpo que, siendo honesto, me provoca admiración, deseo y ternura al mismo tiempo. Eres hermosa de una manera que no se reduce a una mirada.\n\nPero lo que más me gusta, mi amor, es que tu belleza no vive sola. Está acompañada de personalidad, de carácter y de una manera de ser que hace que todo en ti tenga más peso, más sentido y más encanto. Lo físico me atrae profundamente, sí, pero lo que me termina de rendir ante ti es que esa belleza viene con esencia, con autenticidad y con una luz que no necesita permiso para notarse.",
+            frase: "Eres belleza, pero también esencia; y eso me deja sin defensa."
+        },
+        {
+            dia: 19,
+            fechaDesbloqueo: "2026-08-21",
+            titulo: "21 de agosto de 2026 | Venciendo la distancia",
+            imagen: "https://images.unsplash.com/photo-1464746133101-a2c3f88e0dd9?auto=format&fit=crop&q=80&w=600",
+            mensaje: "Mi amor, la distancia entre nosotros existe, sí, pero nunca la he sentido como una pared. La he sentido como una prueba, como un tramo que vale la pena cruzar cuando lo que hay del otro lado importa de verdad. A mí no me asusta que haya kilómetros; me asusta más la idea de no intentar lo suficiente por alguien que me mueve tanto.\n\nSi algo me nace contigo es demostrarte con hechos que esto no se queda en palabras bonitas. Quiero que veas en mí a un hombre dispuesto a sostener lo que dice, a viajar con intención, a escribir, a insistir, a cuidar y a estar presente incluso cuando no pueda estar físicamente al lado tuyo.",
+            frase: "La distancia no me detiene; me obliga a quererte con más intención."
+        },
+        {
+            dia: 20,
+            fechaDesbloqueo: "2026-08-22",
+            titulo: "22 de agosto de 2026 | Paciencia y detalles",
+            imagen: "https://images.unsplash.com/photo-1501908731398-23591973b087?auto=format&fit=crop&q=80&w=600",
+            mensaje: "Mi amor, cuando uno quiere construir algo serio, maduro y bonito, entiende que el amor no vive solo de emoción: también se sostiene con paciencia, detalles y decisión. Por eso cada carta, cada mensaje, cada gesto mío hacia ti no es un adorno; es un ladrillo pequeño, pero firme, de algo que quiero levantar con cuidado.\n\nYo creo en los detalles porque ahí se nota quién ama de verdad. Una palabra en el momento justo, una carta pensada con calma, una intención sincera, una manera de escuchar y de estar: todo eso también construye futuro. Y si hoy te escribo así es porque quiero que sientas que lo nuestro tiene espacio para crecer, madurar y hacerse fuerte sin perder la ternura.",
+            frase: "Los detalles también son una forma de decir para siempre."
+        },
+        {
+            dia: 21,
+            fechaDesbloqueo: "2026-08-23",
+            titulo: "23 de agosto de 2026 | La antesala de tu día",
+            imagen: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&q=80&w=600",
+            mensaje: "Mi amor, ya se siente el aire distinto porque se acerca una fecha demasiado especial: tu día. Y yo, que no soy de guardar lo que siento cuando algo me importa de verdad, confieso que llevo la ilusión prendida desde hace rato. Me emociona pensar que estoy a punto de celebrar otra vuelta al sol tuya, otro capítulo de tu vida, otro motivo para agradecer que existas.\n\nEsta carta es como una respiración antes del momento grande: llena de expectativa, de cariño y de una alegría que no me cabe del todo en el pecho. Quiero que sepas que me emociona celebrarte, honrar tu vida y recordarte que eres importante, valiosa y profundamente querida.",
+            frase: "Se acerca tu día y yo ya estoy celebrándolo con el corazón."
+        },
+        {
+            dia: 22,
+            fechaDesbloqueo: "2026-08-24",
+            titulo: "24 de agosto de 2026 | La víspera",
+            imagen: "https://images.unsplash.com/photo-1533227260828-531465922380?auto=format&fit=crop&q=80&w=600",
+            mensaje: "Mi amor, la víspera de tu cumpleaños me encuentra pensando en todo lo que cambió desde que apareciste. Cambió mi manera de esperar mensajes, mi forma de imaginar el futuro, mi emoción por las pequeñas cosas y, sobre todo, mi forma de entender que alguien puede llegar a la vida de uno y dejarla más viva. Desde que te conozco, todo tiene un poco más de color, más de sentido y más de intención.\n\nMañana no solo celebraré que cumples años; celebraré que existes, que eres tú, que el mundo te puso en mi camino y que de alguna manera me enseñaste a querer con más verdad.",
+            frase: "La víspera de tu cumpleaños ya se siente como una promesa hermosa."
+        },
+        {
+            dia: 23,
+            fechaDesbloqueo: "2026-08-25",
+            titulo: "25 de agosto de 2026 | Feliz cumpleaños y algo más",
+            imagen: "https://images.unsplash.com/photo-1537907690979-ee8e01276184?auto=format&fit=crop&q=80&w=600",
+            mensaje: "Mi amor, hoy sí es tu día. Hoy celebro tu vida con toda el alma, porque naciste tú y con eso bastó para volver importante una fecha, un recuerdo y una ilusión. Feliz cumpleaños, mi amor. Ojalá pudieras ver con la intensidad con la que te pienso, con cuánto cariño admiro tu existencia, con qué ternura me nace desearte alegría, paz, salud, plenitud y sueños cumplidos.\n\nSi he escrito estas cartas una a una es porque quería que llegaras a este momento sabiendo algo esencial: lo que siento por ti no es pasajero ni pequeño. Me gustas profundamente, me importas de una forma seria y bonita, y quiero seguir construyendo contigo algo que valga la pena cuidar. Por eso, en este día tan importante, quiero hacerte mi propuesta con el corazón abierto y sin rodeos: mi amor, ¿quieres ser mi pareja, caminar conmigo esta historia y permitirme elegirte con intención, respeto y amor?",
+            frase: "Feliz cumpleaños, mi amor: hoy celebro tu vida y te elijo con el corazón abierto."
         }
     ]
 };
@@ -334,6 +454,11 @@ const getLocalYYYYMMDD = (date) => {
     return `${y}-${m}-${d}`;
 };
 
+function getUnlockDateTime(dateStr) {
+    const parts = dateStr.split('-').map(Number);
+    return new Date(parts[0], parts[1] - 1, parts[2], 12, 0, 0, 0);
+}
+
 function formatReadableDate(dateStr) {
     const parts = dateStr.split('-');
     const day = parseInt(parts[2], 10);
@@ -367,7 +492,7 @@ function updateCalendarCountdowns() {
         const unlockDateStr = node.getAttribute('data-unlock-date');
         if (!unlockDateStr) return;
 
-        const unlockDate = new Date(`${unlockDateStr}T00:00:00`);
+        const unlockDate = getUnlockDateTime(unlockDateStr);
         const remaining = formatCountdown(unlockDate);
         node.innerHTML = `<span>Falta</span> <strong>${remaining}</strong>`;
     });
@@ -375,10 +500,11 @@ function updateCalendarCountdowns() {
 
 function getDayState(dayNum) {
     const item = CONFIG.dias.find(d => d.dia === dayNum);
-    const todayStr = getLocalYYYYMMDD(new Date());
+    const now = new Date();
+    const unlockDate = getUnlockDateTime(item.fechaDesbloqueo);
     
-    // ¿Ya llegó la fecha de desbloqueo?
-    const isDateReached = todayStr >= item.fechaDesbloqueo;
+    // ¿Ya llegó la hora de desbloqueo (12:00 PM del día programado)?
+    const isDateReached = now >= unlockDate;
     if (!isDateReached) {
         return 'locked';
     }
@@ -408,11 +534,15 @@ function initProgress() {
         currentDayStates = JSON.parse(saved);
     } else {
         currentDayStates = {};
-        for (let i = 1; i <= 8; i++) {
+    }
+
+    const totalDays = CONFIG.dias.length;
+    for (let i = 1; i <= totalDays; i++) {
+        if (!currentDayStates[i]) {
             currentDayStates[i] = 'locked';
         }
-        saveProgress();
     }
+    saveProgress();
 }
 
 function saveProgress() {
@@ -427,7 +557,8 @@ function unlockNextDay(dayRead) {
 }
 
 function checkAllDaysRead() {
-    if (currentDayStates[8] === 'read') {
+    const lastDay = CONFIG.dias.length;
+    if (currentDayStates[lastDay] === 'read') {
         DOM.proposalTrigger.classList.remove('hidden-trigger');
         DOM.proposalTrigger.classList.add('show-trigger');
     } else {
@@ -502,17 +633,16 @@ function openLockedMessage(day) {
     const data = CONFIG.dias.find(item => item.dia === day);
     if (!data) return;
     
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const unlockDate = new Date(data.fechaDesbloqueo + "T00:00:00");
-    const diffTime = unlockDate - today;
+    const now = new Date();
+    const unlockDate = getUnlockDateTime(data.fechaDesbloqueo);
+    const diffTime = unlockDate - now;
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     
     DOM.modalDayBadge.innerText = `Día ${data.dia}`;
     DOM.modalTitle.innerText = "Carta Bajo Candado 🔒";
     DOM.modalImg.src = "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&q=80&w=600";
     
-    let messageText = `¡Aún no es momento, mi amor! Esta carta contiene un recuerdo hermoso, pero se desbloqueará el ${formatReadableDate(data.fechaDesbloqueo)}.\n\n`;
+    let messageText = `¡Aún no es momento, mi amor! Esta carta contiene un recuerdo hermoso, pero se desbloqueará el ${formatReadableDate(data.fechaDesbloqueo)} a las 12:00 PM.\n\n`;
     
     if (diffDays <= 0) {
         messageText += `¡Se desbloquea hoy! Pero antes debes leer las cartas de los días anteriores. 😉`;
@@ -554,6 +684,11 @@ function openLockedMessage(day) {
     DOM.modalReadDone.innerHTML = '<i class="fas fa-lock-open"></i> Esperaré con ansias';
     activeDayData = null;
     
+    // Evitar scroll del body cuando el modal está activo
+    document.body.classList.add('modal-open');
+    // Asegurar que el contenido del modal comience arriba
+    const scrollArea = DOM.modal.querySelector('.modal-content-scroll');
+    if (scrollArea) scrollArea.scrollTop = 0;
     DOM.modal.classList.add('active');
 }
 
@@ -570,18 +705,25 @@ function openLetter(day) {
     DOM.modalPhrase.innerText = `"${data.frase}"`;
     DOM.modalSignature.innerText = '— Santi';
     
-    // Si es el día de la propuesta (Día 8), personalizamos el botón
-    if (day === 8) {
+    // Si es el último día, personalizamos el botón para la propuesta
+    if (day === CONFIG.dias.length) {
         DOM.modalReadDone.innerHTML = '<i class="fas fa-heart"></i> Tengo una pregunta para ti... ❤️';
     } else {
         DOM.modalReadDone.innerHTML = '<i class="fas fa-heart"></i> Lo he leído';
     }
     
+    // Evitar scroll del body cuando el modal está activo
+    document.body.classList.add('modal-open');
+    // Asegurar que el contenido del modal comience arriba
+    const scrollArea = DOM.modal.querySelector('.modal-content-scroll');
+    if (scrollArea) scrollArea.scrollTop = 0;
     DOM.modal.classList.add('active');
 }
 
 function closeModal() {
     DOM.modal.classList.remove('active');
+    // Restaurar scroll del body
+    document.body.classList.remove('modal-open');
     
     if (countdownInterval) {
         clearInterval(countdownInterval);
@@ -596,8 +738,8 @@ function closeModal() {
         unlockNextDay(finishedDay);
         activeDayData = null;
         
-        // Transición automática a la propuesta tras leer el Día 8
-        if (finishedDay === 8) {
+        // Transición automática a la propuesta tras leer el último día
+        if (finishedDay === CONFIG.dias.length) {
             setTimeout(() => {
                 goToProposalScreen();
             }, 600); // Esperar a que se complete la animación del modal
