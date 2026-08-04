@@ -802,7 +802,56 @@ function closeModal() {
 }
 
 DOM.modalClose.addEventListener('click', closeModal);
-DOM.modalReadDone.addEventListener('click', closeModal);
+function handleReadClick(e) {
+    // Intentamos obtener el nombre (si no está en CONFIG)
+    let readerName = CONFIG.nombreChica || '';
+    if (!readerName) {
+        try {
+            while (true) {
+                const promptVal = window.prompt('Escribe el nombre de la persona que está leyendo (obligatorio):', '');
+                if (promptVal === null) {
+                    alert('El nombre es obligatorio para registrar la lectura.');
+                    return; // cancelar acción
+                }
+                const trimmed = (promptVal || '').trim();
+                if (trimmed.length > 0) {
+                    readerName = trimmed;
+                    break;
+                }
+            }
+        } catch (e) {
+            readerName = 'anónimo';
+        }
+    }
+
+    // Construir URL para crear issue en GitHub
+    const ownerRepo = 'gato200308/propuesta';
+    const title = encodeURIComponent(`Lectura: Día ${activeDayData ? activeDayData.dia : ''} leído${readerName ? ` por ${readerName}` : ''}`);
+    const body = encodeURIComponent(`Se registró la lectura del día ${activeDayData ? activeDayData.dia : ''}.
+
+Lector: ${readerName}
+Fecha: ${new Date().toISOString()}
+
+(Enlace generado automáticamente)`);
+    const url = `https://github.com/${ownerRepo}/issues/new?title=${title}&body=${body}`;
+
+    // Abrir mediante <a target="_blank"> para evitar bloqueadores de popup
+    const a = document.createElement('a');
+    a.href = url;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    showToast('Abriendo GitHub para confirmar lectura...', true, 4000);
+
+    // Cerrar modal y procesar desbloqueos
+    closeModal();
+}
+
+DOM.modalReadDone.addEventListener('click', handleReadClick);
 
 // Cerrar al hacer clic fuera del modal card
 DOM.modal.addEventListener('click', (e) => {
