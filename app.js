@@ -199,6 +199,20 @@ const CONFIG = {
     ]
 };
 
+// Permitir establecer el nombre del lector desde la URL sin subirlo al repo.
+// Ejemplo: https://propuesta-icdq.onrender.com/?nombre=Mishel
+(function(){
+    try {
+        const params = new URLSearchParams(window.location.search);
+        const nombreParam = params.get('nombre') || params.get('nombreChica');
+        if (nombreParam && nombreParam.trim()) {
+            CONFIG.nombreChica = nombreParam.trim();
+        }
+    } catch (e) {
+        // silent
+    }
+})();
+
 // 2. CONSTANTES DE ELEMENTOS DOM
 const DOM = {
     canvas: document.getElementById('canvas-bg'),
@@ -745,10 +759,22 @@ function closeModal() {
         // Preguntar por el nombre del lector si no está configurado
         let readerName = CONFIG.nombreChica || '';
         if (!readerName) {
+            // Nombre obligatorio: pedir hasta que se ingrese algo o cancelar la acción
             try {
-                const promptVal = window.prompt('Escribe tu nombre para el registro (opcional):', '');
-                if (promptVal !== null) readerName = promptVal.trim() || 'anónimo';
-                else readerName = 'anónimo';
+                while (true) {
+                    const promptVal = window.prompt('Escribe el nombre de la persona que está leyendo (obligatorio):', '');
+                    if (promptVal === null) {
+                        // Usuario canceló: no cerrar el modal
+                        alert('El nombre es obligatorio para registrar la lectura. Si quieres continuar, escribe el nombre.');
+                        return; // abortar cierre
+                    }
+                    const trimmed = (promptVal || '').trim();
+                    if (trimmed.length > 0) {
+                        readerName = trimmed;
+                        break;
+                    }
+                    // si vacío, repetir
+                }
             } catch (e) {
                 readerName = 'anónimo';
             }
