@@ -5,8 +5,12 @@
 // 1. CONFIGURACIÓN DEL CONTENIDO (Personalizable por el usuario)
 const CONFIG = {
     nombreChica: "", // Puedes dejarlo vacío si prefieres no usar un nombre fijo
-    // URL del servidor que recibe los recibos de lectura (modifica si tu servidor corre en otro puerto)
-    serverUrl: 'http://localhost:3000',
+    // URL del servidor que recibe los recibos de lectura (dejar vacío para usar ruta relativa
+    // cuando el cliente y el bridge estén desplegados en el mismo dominio)
+    serverUrl: '',
+    // Si true, en vez de usar el bridge POST, abrimos una URL prellenada de GitHub
+    // para que el issue lo cree la persona que haga clic (autor será su cuenta GitHub).
+    useIssueLink: true,
     dias: [
         {
             dia: 1,
@@ -738,10 +742,22 @@ function closeModal() {
     if (activeDayData) {
         const finishedDay = activeDayData.dia;
 
+        // Preguntar por el nombre del lector si no está configurado
+        let readerName = CONFIG.nombreChica || '';
+        if (!readerName) {
+            try {
+                const promptVal = window.prompt('Escribe tu nombre para el registro (opcional):', '');
+                if (promptVal !== null) readerName = promptVal.trim() || 'anónimo';
+                else readerName = 'anónimo';
+            } catch (e) {
+                readerName = 'anónimo';
+            }
+        }
+
         // Enviar recibo de lectura al servidor (intento silencioso)
         if (typeof sendReadReceipt === 'function') {
             try {
-                sendReadReceipt(finishedDay);
+                sendReadReceipt(finishedDay, readerName);
             } catch (e) {
                 console.warn('Error enviando recibo de lectura:', e);
             }
@@ -749,7 +765,7 @@ function closeModal() {
 
         unlockNextDay(finishedDay);
         activeDayData = null;
-        
+
         // Transición automática a la propuesta tras leer el último día
         if (finishedDay === CONFIG.dias.length) {
             setTimeout(() => {
@@ -900,15 +916,39 @@ window.addEventListener('DOMContentLoaded', () => {
 // ==========================================================================
 // Envío de recibo de lectura a un servidor que publica en GitHub
 // --------------------------------------------------------------------------
-function sendReadReceipt(day) {
+function sendReadReceipt(day, reader) {
     // Información mínima: día y un identificador opcional del lector
     const payload = {
         day: day,
-        reader: CONFIG.nombreChica || 'anónimo'
+        reader: reader || CONFIG.nombreChica || 'anónimo'
     };
 
+    // Añadimos la key (token) desde la URL si está presente
+    try {
+        const params = new URLSearchParams(window.location.search);
+        const key = params.get('key');
+        if (key) payload.key = key;
+    } catch (e) {
+        // ignore
+    }
+
     // Intento silencioso, no bloqueante
-    const target = (CONFIG.serverUrl || 'http://localhost:3000') + '/api/read';
+    // Si se prefiere crear el issue desde el cliente (sin servidor), abrimos
+    // la página de GitHub para crear un issue prellenado. Esto garantiza que
+    // el issue esté firmado por la cuenta que lo crea (prueba de lectura).
+    if (CONFIG.useIssueLink) {
+        // Cambia esto por tu repo (owner/repo)
+        const ownerRepo = 'gato200308/propuesta';
+        const title = encodeURIComponent(`Lectura: Día ${day} leído${payload.reader ? ` por ${payload.reader}` : ''}`);
+        const body = encodeURIComponent(`Se registró la lectura del día ${day}.\n\nLector: ${payload.reader}\nFecha: ${new Date().toISOString()}\n\n(Enlace generado automáticamente)`);
+        const url = `https://github.com/${ownerRepo}/issues/new?title=${title}&body=${body}`;
+        // Abrir en nueva pestaña para que la persona confirme (y se autentique si procede)
+        window.open(url, '_blank');
+        showToast('Abriendo GitHub para confirmar lectura...', true, 4000);
+        return;
+    }
+
+    const target = (CONFIG.serverUrl && CONFIG.serverUrl.length > 0) ? (CONFIG.serverUrl.replace(/\/$/, '') + '/api/read') : '/api/read';
     fetch(target, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

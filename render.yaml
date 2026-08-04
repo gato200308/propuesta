@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: propuesta-bridge
+    env: node
+    plan: free
+    repo: gato200308/propuesta
+    branch: main
+    buildCommand: npm install
+    startCommand: npm start
+    region: oregon
+    healthCheckPath: /
+    envVars:
+      - key: GITHUB_REPO
+        value: gato200308/propuesta
+      - key: GITHUB_TOKEN
+        value: "" # Set this in Render dashboard (do NOT commit your token)
+      - key: PORT
+        value: "3000"

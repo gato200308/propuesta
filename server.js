@@ -1,11 +1,15 @@
 require('dotenv').config();
 const express = require('express');
+const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
-// Permitir CORS simple desde la página estática local
+// Servir archivos estáticos (index.html, app.js, styles.css, etc.) desde la raíz
+app.use(express.static(path.join(__dirname, '/')));
+
+// Permitir CORS simple (por si el cliente se sirve desde otro origen)
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
@@ -14,8 +18,9 @@ app.use((req, res, next) => {
   next();
 });
 
+// Ruta raíz sirve el index.html (por compatibilidad)
 app.get('/', (req, res) => {
-  res.json({ ok: true, message: 'Read-receipt bridge for GitHub is running' });
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 app.post('/api/read', async (req, res) => {
@@ -35,8 +40,49 @@ app.post('/api/read', async (req, res) => {
   }
 
   const title = `Lectura: Día ${day} leído${reader ? ` por ${reader}` : ''}`;
-  const body = `Se registró la lectura del día ${day}.
-\nLector: ${reader || 'anónimo'}\nFecha: ${new Date().toISOString()}`;
+  const requesterIp = req.headers['x-forwarded-for'] || req.ip || 'desconocida';
+  const userAgent = req.headers['user-agent'] || 'desconocido';
+  const body = `Se registró la lectura del día ${day}.\n\nLector: ${reader || 'anónimo'}\nFecha: ${new Date().toISOString()}\n\nMeta:\n- IP: ${requesterIp}\n- User-Agent: ${userAgent}`;
+
+  // Validar token secreto (tokens.json)
+  let tokens = {};
+  const TOKENS_PATHS = [
+    path.join(__dirname, 'tokens.json'),
+    path.join('/etc/secrets', 'tokens.json')
+  ];
+  for (const p of TOKENS_PATHS) {
+    try {
+      if (fs.existsSync(p)) {
+        const raw = fs.readFileSync(p, 'utf8');
+        tokens = JSON.parse(raw);
+        break;
+      }
+    } catch (e) {
+      // ignore
+    }
+  }
+
+  const providedKey = req.body.key || req.query.key;
+  if (!tokens || !tokens[day]) {
+    return res.status(403).json({ error: 'No token configured for this day' });
+  }
+  if (!providedKey || providedKey !== tokens[day].token) {
+    return res.status(403).json({ error: 'Invalid or missing token for this day' });
+  }
+  if (tokens[day].used) {
+    return res.status(409).json({ error: 'Token already used' });
+  }
+
+  // Marcar token como usado (si el archivo está en el repo local)
+  try {
+    tokens[day].used = true;
+    const localPath = path.join(__dirname, 'tokens.json');
+    if (fs.existsSync(localPath)) {
+      fs.writeFileSync(localPath, JSON.stringify(tokens, null, 2));
+    }
+  } catch (e) {
+    console.warn('Could not persist token usage:', e.message);
+  }
 
   try {
     const resp = await fetch(`https://api.github.com/repos/${owner}/${repoName}/issues`, {
@@ -52,6 +98,69 @@ app.post('/api/read', async (req, res) => {
     const data = await resp.json();
     if (!resp.ok) {
       return res.status(502).json({ error: data });
+    }
+
+    // Intentar actualizar un archivo público en el repo para reflejar el estado
+    try {
+      const statusPath = 'read-status.json';
+      const apiBase = 'https://api.github.com';
+      const fileUrl = `${apiBase}/repos/${owner}/${repoName}/contents/${encodeURIComponent(statusPath)}`;
+
+      // Obtener contenido actual (si existe)
+      let existing = null;
+      const getResp = await fetch(fileUrl, {
+        headers: {
+          'Authorization': `token ${token}`,
+          'Accept': 'application/vnd.github.v3+json'
+        }
+      });
+      if (getResp.ok) {
+        existing = await getResp.json();
+      }
+
+      // Construir nuevo estado
+      let current = {};
+      if (existing && existing.content) {
+        try {
+          const raw = Buffer.from(existing.content, 'base64').toString('utf8');
+          current = JSON.parse(raw || '{}');
+        } catch (e) {
+          current = {};
+        }
+      }
+
+      const timestamp = new Date().toISOString();
+      current[day] = {
+        used: true,
+        reader: reader || 'anónimo',
+        issue: data.html_url,
+        timestamp
+      };
+
+      const newContent = Buffer.from(JSON.stringify(current, null, 2)).toString('base64');
+
+      const putBody = {
+        message: `Update read status for day ${day}`,
+        content: newContent,
+      };
+      if (existing && existing.sha) putBody.sha = existing.sha;
+
+      const putResp = await fetch(fileUrl, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `token ${token}`,
+          'Accept': 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(putBody)
+      });
+
+      if (!putResp.ok) {
+        const err = await putResp.text();
+        console.warn('Could not update read-status.json:', err);
+      }
+    } catch (e) {
+      console.warn('Failed updating repo status file:', e.message);
     }
 
     return res.json({ ok: true, issue: data.html_url });

@@ -1,0 +1,53 @@
+name: Update read-status on issue
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  update-status:
+    runs-on: ubuntu-latest
+    if: |
+      contains(github.event.issue.title, 'Lectura: Día ')
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update read-status.json
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const m = issue.title.match(/Día\s*(\d+)/);
+            if (!m) return;
+            const day = m[1];
+            const fs = require('fs');
+            const path = 'read-status.json';
+            let current = {};
+            if (fs.existsSync(path)) {
+              try { current = JSON.parse(fs.readFileSync(path,'utf8')); } catch (e) { current = {}; }
+            }
+            current[day] = {
+              used: true,
+              reader: issue.user && issue.user.login ? issue.user.login : 'unknown',
+              issue: issue.html_url,
+              timestamp: new Date().toISOString()
+            };
+            const content = JSON.stringify(current, null, 2);
+
+            // Get current file SHA if exists
+            let sha = undefined;
+            try {
+              const resp = await github.rest.repos.getContent({ owner: context.repo.owner, repo: context.repo.repo, path });
+              sha = resp.data.sha;
+            } catch (e) {
+              // file may not exist
+            }
+
+            await github.rest.repos.createOrUpdateFileContents({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              path,
+              message: `Update read-status for day ${day}`,
+              content: Buffer.from(content).toString('base64'),
+              sha
+            });
