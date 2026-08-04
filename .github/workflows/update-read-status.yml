@@ -4,11 +4,14 @@ on:
   issues:
     types: [opened]
 
+permissions:
+  contents: write
+
 jobs:
   update-status:
     runs-on: ubuntu-latest
-    if: |
-      contains(github.event.issue.title, 'Lectura: Día ')
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
 
@@ -17,7 +20,8 @@ jobs:
         with:
           script: |
             const issue = context.payload.issue;
-            const m = issue.title.match(/Día\s*(\d+)/);
+            // aceptar 'Día' o 'Dia', mayúsculas/minúsculas
+            const m = issue.title.match(/D[ií]a\s*(\d+)/i);
             if (!m) return;
             const day = m[1];
             const fs = require('fs');
