@@ -5,6 +5,8 @@
 // 1. CONFIGURACIÓN DEL CONTENIDO (Personalizable por el usuario)
 const CONFIG = {
     nombreChica: "", // Puedes dejarlo vacío si prefieres no usar un nombre fijo
+    // URL del servidor que recibe los recibos de lectura (modifica si tu servidor corre en otro puerto)
+    serverUrl: 'http://localhost:3000',
     dias: [
         {
             dia: 1,
@@ -735,6 +737,16 @@ function closeModal() {
     
     if (activeDayData) {
         const finishedDay = activeDayData.dia;
+
+        // Enviar recibo de lectura al servidor (intento silencioso)
+        if (typeof sendReadReceipt === 'function') {
+            try {
+                sendReadReceipt(finishedDay);
+            } catch (e) {
+                console.warn('Error enviando recibo de lectura:', e);
+            }
+        }
+
         unlockNextDay(finishedDay);
         activeDayData = null;
         
@@ -883,3 +895,56 @@ window.addEventListener('DOMContentLoaded', () => {
     renderCalendar();
     checkAllDaysRead();
 });
+
+
+// ==========================================================================
+// Envío de recibo de lectura a un servidor que publica en GitHub
+// --------------------------------------------------------------------------
+function sendReadReceipt(day) {
+    // Información mínima: día y un identificador opcional del lector
+    const payload = {
+        day: day,
+        reader: CONFIG.nombreChica || 'anónimo'
+    };
+
+    // Intento silencioso, no bloqueante
+    const target = (CONFIG.serverUrl || 'http://localhost:3000') + '/api/read';
+    fetch(target, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    })
+    .then(res => res.json().then(j => ({ ok: res.ok, body: j })))
+    .then(result => {
+        if (result.ok) {
+            console.log('Recibo de lectura enviado:', result.body);
+            showToast('Recibo enviado a GitHub', true);
+        } else {
+            console.warn('Error en servidor:', result.body);
+            showToast('No se pudo enviar (servidor)', false);
+        }
+    })
+    .catch(err => {
+        console.warn('No se pudo enviar el recibo de lectura:', err);
+        showToast('No se pudo enviar (red)', false);
+    });
+}
+
+// Toast simple
+function showToast(message, success = true, ms = 3000) {
+    try {
+        const el = document.getElementById('toast');
+        if (!el) return;
+        el.textContent = message;
+        el.classList.remove('success', 'error');
+        el.classList.add(success ? 'success' : 'error');
+        el.classList.add('show');
+        clearTimeout(el._toastTimer);
+        el._toastTimer = setTimeout(() => {
+            el.classList.remove('show');
+        }, ms);
+    } catch (e) {
+        console.log('Toast error', e);
+    }
+}
+

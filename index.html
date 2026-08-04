@@ -15,6 +15,32 @@
     
     <!-- Estilos CSS Personalizados -->
     <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Toast simple para notificaciones de éxito/error */
+        #toast {
+            position: fixed;
+            left: 50%;
+            bottom: 40px;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            color: #fff;
+            padding: 10px 18px;
+            border-radius: 20px;
+            font-family: Montserrat, sans-serif;
+            font-size: 14px;
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 220ms ease, transform 220ms ease;
+            pointer-events: none;
+        }
+        #toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(-6px);
+            pointer-events: auto;
+        }
+        #toast.success { background: linear-gradient(90deg,#2ecc71,#27ae60); }
+        #toast.error { background: linear-gradient(90deg,#ff6b6b,#ff3b30); }
+    </style>
 </head>
 <body>
     <!-- Canvas de fondo para partículas y corazones -->
@@ -162,5 +188,6 @@
 
     <!-- Scripts de la Aplicación -->
     <script src="app.js"></script>
+    <div id="toast" role="status" aria-live="polite"></div>
 </body>
 </html>
