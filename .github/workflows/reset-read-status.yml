@@ -1,0 +1,49 @@
+name: Reset read receipts
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  reset:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Close read-receipt issues and reset read-status.json
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const label = 'read-receipt';
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+
+            // List open issues with the label (paginated)
+            const issues = [];
+            for await (const response of github.paginate.iterator(github.rest.issues.listForRepo, { owner, repo, state: 'open', labels: label, per_page: 100 })) {
+              for (const i of response.data) issues.push(i);
+            }
+
+            core.info(`Found ${issues.length} open issues with label ${label}`);
+
+            for (const issue of issues) {
+              await github.rest.issues.update({ owner, repo, issue_number: issue.number, state: 'closed' });
+              core.info(`Closed issue #${issue.number}`);
+            }
+
+            // Reset read-status.json to empty object
+            const path = 'read-status.json';
+            let sha = undefined;
+            try {
+              const resp = await github.rest.repos.getContent({ owner, repo, path });
+              sha = resp.data.sha;
+            } catch (e) {
+              // file may not exist
+            }
+
+            const content = Buffer.from(JSON.stringify({}, null, 2)).toString('base64');
+            await github.rest.repos.createOrUpdateFileContents({ owner, repo, path, message: 'Reset read-status.json', content, sha });
+            core.info('Reset read-status.json');
