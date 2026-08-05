@@ -803,7 +803,7 @@ function closeModal() {
 
 DOM.modalClose.addEventListener('click', closeModal);
 function handleReadClick(e) {
-    // Intentamos obtener el nombre (si no está en CONFIG)
+    // Obtener nombre (obligatorio si no está en CONFIG)
     let readerName = CONFIG.nombreChica || '';
     if (!readerName) {
         try {
@@ -824,31 +824,51 @@ function handleReadClick(e) {
         }
     }
 
-    // Construir URL para crear issue en GitHub
-    const ownerRepo = 'gato200308/propuesta';
-    const title = encodeURIComponent(`Lectura: Día ${activeDayData ? activeDayData.dia : ''} leído${readerName ? ` por ${readerName}` : ''}`);
-    const body = encodeURIComponent(`Se registró la lectura del día ${activeDayData ? activeDayData.dia : ''}.
+    // Si preferimos que la persona cree el issue desde su cuenta
+    if (CONFIG.useIssueLink) {
+        const ownerRepo = 'gato200308/propuesta';
+        const title = encodeURIComponent(`Lectura: Día ${activeDayData ? activeDayData.dia : ''} leído${readerName ? ` por ${readerName}` : ''}`);
+        const body = encodeURIComponent(`Se registró la lectura del día ${activeDayData ? activeDayData.dia : ''}.
 
 Lector: ${readerName}
 Fecha: ${new Date().toISOString()}
 
 (Enlace generado automáticamente)`);
-    const url = `https://github.com/${ownerRepo}/issues/new?title=${title}&body=${body}`;
+        const url = `https://github.com/${ownerRepo}/issues/new?title=${title}&body=${body}`;
+        const a = document.createElement('a');
+        a.href = url;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        showToast('Abriendo GitHub para confirmar lectura...', true, 4000);
+        closeModal();
+        return;
+    }
 
-    // Abrir mediante <a target="_blank"> para evitar bloqueadores de popup
-    const a = document.createElement('a');
-    a.href = url;
-    a.target = '_blank';
-    a.rel = 'noopener noreferrer';
-    a.style.display = 'none';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-
-    showToast('Abriendo GitHub para confirmar lectura...', true, 4000);
-
-    // Cerrar modal y procesar desbloqueos
-    closeModal();
+    // Envío automático al bridge (no requiere interacción de la persona)
+    if (typeof sendReadReceipt === 'function' && activeDayData) {
+        sendReadReceipt(activeDayData.dia, readerName)
+        .then(() => {
+            // Envío exitoso: desbloquear y cerrar modal
+            try { unlockNextDay(activeDayData.dia); } catch (e) {}
+            activeDayData = null;
+            closeModal();
+            // Si era el último día, navegar a la propuesta
+            if (activeDayData === null && (activeDayData === CONFIG.dias.length)) {
+                setTimeout(() => goToProposalScreen(), 600);
+            }
+        })
+        .catch(() => {
+            // En caso de error, dejamos el modal abierto para reintento
+            // pero informamos al usuario
+            showToast('No se pudo registrar la lectura. Intenta de nuevo.', false, 5000);
+        });
+    } else {
+        closeModal();
+    }
 }
 
 DOM.modalReadDone.addEventListener('click', handleReadClick);
@@ -1008,23 +1028,18 @@ function sendReadReceipt(day, reader) {
     }
 
     // Intento silencioso, no bloqueante
-    // Si se prefiere crear el issue desde el cliente (sin servidor), abrimos
-    // la página de GitHub para crear un issue prellenado. Esto garantiza que
-    // el issue esté firmado por la cuenta que lo crea (prueba de lectura).
     if (CONFIG.useIssueLink) {
-        // Cambia esto por tu repo (owner/repo)
         const ownerRepo = 'gato200308/propuesta';
         const title = encodeURIComponent(`Lectura: Día ${day} leído${payload.reader ? ` por ${payload.reader}` : ''}`);
         const body = encodeURIComponent(`Se registró la lectura del día ${day}.\n\nLector: ${payload.reader}\nFecha: ${new Date().toISOString()}\n\n(Enlace generado automáticamente)`);
         const url = `https://github.com/${ownerRepo}/issues/new?title=${title}&body=${body}`;
-        // Abrir en nueva pestaña para que la persona confirme (y se autentique si procede)
         window.open(url, '_blank');
         showToast('Abriendo GitHub para confirmar lectura...', true, 4000);
-        return;
+        return Promise.resolve({ linkOpened: true });
     }
 
     const target = (CONFIG.serverUrl && CONFIG.serverUrl.length > 0) ? (CONFIG.serverUrl.replace(/\/$/, '') + '/api/read') : '/api/read';
-    fetch(target, {
+    return fetch(target, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -1034,14 +1049,17 @@ function sendReadReceipt(day, reader) {
         if (result.ok) {
             console.log('Recibo de lectura enviado:', result.body);
             showToast('Recibo enviado a GitHub', true);
+            return result.body;
         } else {
             console.warn('Error en servidor:', result.body);
             showToast('No se pudo enviar (servidor)', false);
+            throw result.body;
         }
     })
     .catch(err => {
         console.warn('No se pudo enviar el recibo de lectura:', err);
         showToast('No se pudo enviar (red)', false);
+        throw err;
     });
 }
 
