@@ -213,6 +213,43 @@ const CONFIG = {
     }
 })();
 
+// ========== SISTEMA DE MANTENIMIENTO (3 DÍAS) ==========
+function checkMaintenanceScreen() {
+    const maintenanceStart = localStorage.getItem('maintenance_start_date');
+    const today = new Date().toISOString().split('T')[0];
+    const maintenanceScreen = document.getElementById('maintenance-screen');
+    
+    if (!maintenanceStart) {
+        // Primera vez - activar mantenimiento
+        localStorage.setItem('maintenance_start_date', today);
+        if (maintenanceScreen) maintenanceScreen.classList.remove('hidden');
+        return true;
+    }
+    
+    // Calcular si han pasado 3 días
+    const startDate = new Date(maintenanceStart);
+    const currentDate = new Date(today);
+    const daysDiff = Math.floor((currentDate - startDate) / (1000 * 60 * 60 * 24));
+    
+    if (daysDiff < 3) {
+        // Aún está en el período de 3 días
+        if (maintenanceScreen) maintenanceScreen.classList.remove('hidden');
+        return true;
+    } else {
+        // Ya pasaron 3 días - quitar la pantalla y limpiar
+        if (maintenanceScreen) maintenanceScreen.classList.add('hidden');
+        localStorage.removeItem('maintenance_start_date');
+        return false;
+    }
+}
+
+// Verificar mantenimiento al cargar la página
+window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        checkMaintenanceScreen();
+    }, 100);
+});
+
 // 2. CONSTANTES DE ELEMENTOS DOM
 const DOM = {
     canvas: document.getElementById('canvas-bg'),
@@ -248,7 +285,6 @@ const DOM = {
 // 3. ESTADOS DE LA APLICACIÓN
 let activeDayData = null;
 let currentDayStates = {}; // Almacenará { 1: 'unlocked', 2: 'locked', ... }
-let noButtonClickCount = 0; // Contador de clics en "NO" para móviles
 let countdownInterval = null;
 let calendarCountdownInterval = null;
 let celebrateActive = false;
@@ -740,7 +776,9 @@ function openLetter(day) {
     DOM.modal.classList.add('active');
 }
 
-function closeModal() {
+function closeModal(options = {}) {
+    const { skipReadReceipt = false } = options;
+
     DOM.modal.classList.remove('active');
     // Restaurar scroll del body
     document.body.classList.remove('modal-open');
@@ -753,7 +791,7 @@ function closeModal() {
     // Restaurar texto por defecto del botón
     DOM.modalReadDone.innerHTML = '<i class="fas fa-heart"></i> Lo he leído';
     
-    if (activeDayData) {
+    if (activeDayData && !skipReadReceipt) {
         const finishedDay = activeDayData.dia;
 
         // Preguntar por el nombre del lector si no está configurado
@@ -798,6 +836,8 @@ function closeModal() {
                 goToProposalScreen();
             }, 600); // Esperar a que se complete la animación del modal
         }
+    } else {
+        activeDayData = null;
     }
 }
 
@@ -850,14 +890,16 @@ Fecha: ${new Date().toISOString()}
 
     // Envío automático al bridge (no requiere interacción de la persona)
     if (typeof sendReadReceipt === 'function' && activeDayData) {
-        sendReadReceipt(activeDayData.dia, readerName)
+        const finishedDay = activeDayData.dia;
+
+        sendReadReceipt(finishedDay, readerName)
         .then(() => {
             // Envío exitoso: desbloquear y cerrar modal
-            try { unlockNextDay(activeDayData.dia); } catch (e) {}
+            try { unlockNextDay(finishedDay); } catch (e) {}
             activeDayData = null;
-            closeModal();
+            closeModal({ skipReadReceipt: true });
             // Si era el último día, navegar a la propuesta
-            if (activeDayData === null && (activeDayData === CONFIG.dias.length)) {
+            if (finishedDay === CONFIG.dias.length) {
                 setTimeout(() => goToProposalScreen(), 600);
             }
         })
@@ -867,7 +909,7 @@ Fecha: ${new Date().toISOString()}
             showToast('No se pudo registrar la lectura. Intenta de nuevo.', false, 5000);
         });
     } else {
-        closeModal();
+        closeModal({ skipReadReceipt: true });
     }
 }
 
@@ -891,12 +933,12 @@ function goToProposalScreen() {
     DOM.proposalScreen.classList.remove('hidden');
     DOM.proposalScreen.classList.add('active');
     
-    // Asegurar que el botón NO vuelva a su posición original
+    // Asegurar que el botón NO esté en su posición original
     DOM.btnNo.style.position = 'relative';
     DOM.btnNo.style.left = '0';
     DOM.btnNo.style.top = '0';
     DOM.btnNo.style.transform = 'scale(1)';
-    noButtonClickCount = 0;
+    DOM.btnNo.style.display = 'inline-block';
 }
 
 DOM.btnEnter.addEventListener('click', () => {
@@ -919,67 +961,21 @@ DOM.btnBackToCalendar.addEventListener('click', () => {
 
 
 // ==========================================================================
-// 10. EL BOTÓN "NO" - FÍSICA DIVERTIDA
+// 10. HANDLERS DE RESPUESTA A LA PROPUESTA (SÍ / NO)
 // ==========================================================================
-function moveNoButton() {
-    // Calculamos una posición aleatoria para que escape del mouse
-    // Manteniéndolo dentro del viewport pero evitando que se salga o se oculte
-    const padding = 30;
-    const buttonWidth = DOM.btnNo.offsetWidth;
-    const buttonHeight = DOM.btnNo.offsetHeight;
-    
-    // Aseguramos que se posicione de forma fija respecto a la ventana para poder moverlo libremente
-    DOM.btnNo.style.position = 'fixed';
-    
-    // Rango de la pantalla
-    const maxX = window.innerWidth - buttonWidth - padding;
-    const maxY = window.innerHeight - buttonHeight - padding;
-    
-    const randomX = Math.max(padding, Math.floor(Math.random() * maxX));
-    const randomY = Math.max(padding, Math.floor(Math.random() * maxY));
-    
-    DOM.btnNo.style.left = `${randomX}px`;
-    DOM.btnNo.style.top = `${randomY}px`;
-}
-
-// En escritorio: Escapa al pasar el mouse por encima
-DOM.btnNo.addEventListener('mouseenter', moveNoButton);
-DOM.btnNo.addEventListener('mouseover', moveNoButton);
-
-// En móviles: interacción lúdica al pulsar el botón "NO"
-DOM.btnNo.addEventListener('touchstart', (e) => {
-    e.preventDefault(); // Evita clicks fantasmas
-    noButtonClickCount++;
-    
-    if (noButtonClickCount === 1) {
-        // Primera pulsación: Mueve el botón
-        moveNoButton();
-    } else if (noButtonClickCount === 2) {
-        // Segunda pulsación: Se encoge
-        moveNoButton();
-        DOM.btnNo.style.transform = 'scale(0.7)';
-        DOM.btnNo.innerHTML = '¿Segura? 🥺';
-    } else if (noButtonClickCount === 3) {
-        // Tercera pulsación: Se encoge más y cambia de texto
-        moveNoButton();
-        DOM.btnNo.style.transform = 'scale(0.4)';
-        DOM.btnNo.innerHTML = 'Pensalo bien... 🙏';
-        
-        // Hacemos crecer enormemente el botón SÍ
-        DOM.btnYes.style.transform = 'scale(1.4)';
-    } else {
-        // Cuarta pulsación: Desaparece completamente
-        DOM.btnNo.style.display = 'none';
-        DOM.btnYes.style.transform = 'scale(1.8)';
-        // Ocupa casi toda la fila para que dé clic a la fuerza
-    }
-});
 
 
 // ==========================================================================
 // 11. CELEBRACIÓN DEL "SÍ"
 // ==========================================================================
 DOM.btnYes.addEventListener('click', () => {
+    const readerName = CONFIG.nombreChica || 'anónimo';
+    try {
+        sendReadReceipt(CONFIG.dias.length, readerName, 'proposal', 'si');
+    } catch (e) {
+        console.warn('No se pudo enviar la propuesta:', e);
+    }
+
     DOM.proposalScreen.classList.remove('active');
     DOM.proposalScreen.classList.add('hidden');
     
@@ -993,6 +989,25 @@ DOM.btnYes.addEventListener('click', () => {
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     const hoy = new Date();
     DOM.celebrationDate.innerText = `Fecha oficial: ${hoy.toLocaleDateString('es-ES', options)}`;
+});
+
+// Manejo del botón "NO"
+DOM.btnNo.addEventListener('click', () => {
+    const readerName = CONFIG.nombreChica || 'anónimo';
+    try {
+        sendReadReceipt(CONFIG.dias.length, readerName, 'proposal', 'no');
+    } catch (e) {
+        console.warn('No se pudo enviar la respuesta:', e);
+    }
+
+    // Cerrar la propuesta y volver al calendario
+    DOM.proposalScreen.classList.remove('active');
+    DOM.proposalScreen.classList.add('hidden');
+    
+    DOM.mainScreen.classList.remove('hidden');
+    DOM.mainScreen.classList.add('active');
+    
+    showToast('Tu respuesta ha sido registrada', true, 3000);
 });
 
 
@@ -1011,11 +1026,13 @@ window.addEventListener('DOMContentLoaded', () => {
 // ==========================================================================
 // Envío de recibo de lectura a un servidor que publica en GitHub
 // --------------------------------------------------------------------------
-function sendReadReceipt(day, reader) {
+function sendReadReceipt(day, reader, action = 'read', response = null) {
     // Información mínima: día y un identificador opcional del lector
     const payload = {
         day: day,
-        reader: reader || CONFIG.nombreChica || 'anónimo'
+        reader: reader || CONFIG.nombreChica || 'anónimo',
+        action,
+        response: response // 'si' o 'no' para propuestas
     };
 
     // Añadimos la key (token) desde la URL si está presente
@@ -1038,7 +1055,10 @@ function sendReadReceipt(day, reader) {
         return Promise.resolve({ linkOpened: true });
     }
 
-    const target = (CONFIG.serverUrl && CONFIG.serverUrl.length > 0) ? (CONFIG.serverUrl.replace(/\/$/, '') + '/api/read') : '/api/read';
+    const target = (CONFIG.serverUrl && CONFIG.serverUrl.length > 0)
+        ? (CONFIG.serverUrl.replace(/\/$/, '') + (action === 'proposal' ? '/api/proposal' : '/api/read'))
+        : (action === 'proposal' ? '/api/proposal' : '/api/read');
+
     return fetch(target, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -1046,19 +1066,19 @@ function sendReadReceipt(day, reader) {
     })
     .then(res => res.json().then(j => ({ ok: res.ok, body: j })))
     .then(result => {
-        if (result.ok) {
-            console.log('Recibo de lectura enviado:', result.body);
-            showToast('Recibo enviado a GitHub', true);
+        if (result.ok && result.body && result.body.answer === 'si') {
+            console.log('Recibo enviado:', result.body);
+            showToast('Sí', true);
             return result.body;
         } else {
             console.warn('Error en servidor:', result.body);
-            showToast('No se pudo enviar (servidor)', false);
+            showToast('No', false);
             throw result.body;
         }
     })
     .catch(err => {
-        console.warn('No se pudo enviar el recibo de lectura:', err);
-        showToast('No se pudo enviar (red)', false);
+        console.warn('No se pudo enviar el recibo:', err);
+        showToast('No', false);
         throw err;
     });
 }

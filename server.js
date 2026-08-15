@@ -1,6 +1,9 @@
 require('dotenv').config();
+const fs = require('fs');
 const express = require('express');
 const path = require('path');
+const { createIssueResponse } = require('./issue-utils');
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 const SKIP_TOKEN_VALIDATION = process.env.SKIP_TOKEN_VALIDATION === 'true';
@@ -24,26 +27,37 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.post('/api/read', async (req, res) => {
-  const { day, reader } = req.body || {};
-  if (!day) return res.status(400).json({ error: 'day is required' });
+async function handleIssueReceipt(req, res, action = 'read') {
+  const day = req.body?.day ?? req.body?.dia ?? null;
+  const reader = req.body?.reader ?? req.body?.nombre ?? 'anónimo';
+  const response = req.body?.response ?? null;
+
+  if (!day) {
+    return res.status(400).json(createIssueResponse({ ok: false, action, day, reader, error: 'day is required' }));
+  }
 
   const repo = process.env.GITHUB_REPO; // formato: owner/repo
   const token = process.env.GITHUB_TOKEN;
 
   if (!repo || !token) {
-    return res.status(500).json({ error: 'Server not configured. Set GITHUB_REPO and GITHUB_TOKEN.' });
+    return res.status(500).json(createIssueResponse({ ok: false, action, day, reader, error: 'Server not configured. Set GITHUB_REPO and GITHUB_TOKEN.' }));
   }
 
   const [owner, repoName] = repo.split('/');
   if (!owner || !repoName) {
-    return res.status(500).json({ error: 'GITHUB_REPO must be in owner/repo format' });
+    return res.status(500).json(createIssueResponse({ ok: false, action, day, reader, error: 'GITHUB_REPO must be in owner/repo format' }));
   }
 
-  const title = `Lectura: Día ${day} leído${reader ? ` por ${reader}` : ''}`;
+  const isProposal = action === 'proposal';
+  const title = isProposal
+    ? `Propuesta: Día ${day} - ${response ? response.toUpperCase() : '?'} - ${reader}`
+    : `Lectura: Día ${day} leído${reader ? ` por ${reader}` : ''}`;
+
   const requesterIp = req.headers['x-forwarded-for'] || req.ip || 'desconocida';
   const userAgent = req.headers['user-agent'] || 'desconocido';
-  const body = `Se registró la lectura del día ${day}.\n\nLector: ${reader || 'anónimo'}\nFecha: ${new Date().toISOString()}\n\nMeta:\n- IP: ${requesterIp}\n- User-Agent: ${userAgent}`;
+  const body = isProposal
+    ? `Se registró la propuesta de ser novios para el día ${day}.\n\nRespuesta: ${response ? response.toUpperCase() : 'SIN RESPUESTA'}\n\nLector: ${reader || 'anónimo'}\nFecha: ${new Date().toISOString()}\n\nMeta:\n- IP: ${requesterIp}\n- User-Agent: ${userAgent}`
+    : `Se registró la lectura del día ${day}.\n\nLector: ${reader || 'anónimo'}\nFecha: ${new Date().toISOString()}\n\nMeta:\n- IP: ${requesterIp}\n- User-Agent: ${userAgent}`;
 
   // Validación opcional de tokens por día. En despliegues donde quieras
   // evitar el proceso manual de crear issues, puedes activar
@@ -68,13 +82,13 @@ app.post('/api/read', async (req, res) => {
 
     const providedKey = req.body.key || req.query.key;
     if (!tokens || !tokens[day]) {
-      return res.status(403).json({ error: 'No token configured for this day' });
+      return res.status(403).json(createIssueResponse({ ok: false, action, day, reader, error: 'No token configured for this day' }));
     }
     if (!providedKey || providedKey !== tokens[day].token) {
-      return res.status(403).json({ error: 'Invalid or missing token for this day' });
+      return res.status(403).json(createIssueResponse({ ok: false, action, day, reader, error: 'Invalid or missing token for this day' }));
     }
     if (tokens[day].used) {
-      return res.status(409).json({ error: 'Token already used' });
+      return res.status(409).json(createIssueResponse({ ok: false, action, day, reader, error: 'Token already used' }));
     }
 
     // Marcar token como usado (si el archivo está en el repo local)
@@ -104,7 +118,7 @@ app.post('/api/read', async (req, res) => {
 
     const data = await resp.json();
     if (!resp.ok) {
-      return res.status(502).json({ error: data });
+      return res.status(502).json(createIssueResponse({ ok: false, action, day, reader, error: data }));
     }
 
     // Intentar actualizar un archivo público en el repo para reflejar el estado
@@ -141,7 +155,8 @@ app.post('/api/read', async (req, res) => {
         used: true,
         reader: reader || 'anónimo',
         issue: data.html_url,
-        timestamp
+        timestamp,
+        action
       };
 
       const newContent = Buffer.from(JSON.stringify(current, null, 2)).toString('base64');
@@ -170,12 +185,15 @@ app.post('/api/read', async (req, res) => {
       console.warn('Failed updating repo status file:', e.message);
     }
 
-    return res.json({ ok: true, issue: data.html_url });
+    return res.json(createIssueResponse({ ok: true, action, day, reader, issue: data.html_url }));
   } catch (err) {
     console.error('Error creating GitHub issue:', err);
-    return res.status(500).json({ error: err.message });
+    return res.status(500).json(createIssueResponse({ ok: false, action, day, reader, error: err.message }));
   }
-});
+}
+
+app.post('/api/read', (req, res) => handleIssueReceipt(req, res, 'read'));
+app.post('/api/proposal', (req, res) => handleIssueReceipt(req, res, 'proposal'));
 
 app.listen(PORT, () => {
   console.log(`Read-receipt server listening on http://localhost:${PORT}`);
