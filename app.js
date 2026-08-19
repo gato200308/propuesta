@@ -213,43 +213,6 @@ const CONFIG = {
     }
 })();
 
-// ========== SISTEMA DE MANTENIMIENTO (3 DÍAS) ==========
-function checkMaintenanceScreen() {
-    const maintenanceStart = localStorage.getItem('maintenance_start_date');
-    const today = new Date().toISOString().split('T')[0];
-    const maintenanceScreen = document.getElementById('maintenance-screen');
-    
-    if (!maintenanceStart) {
-        // Primera vez - activar mantenimiento
-        localStorage.setItem('maintenance_start_date', today);
-        if (maintenanceScreen) maintenanceScreen.classList.remove('hidden');
-        return true;
-    }
-    
-    // Calcular si han pasado 3 días
-    const startDate = new Date(maintenanceStart);
-    const currentDate = new Date(today);
-    const daysDiff = Math.floor((currentDate - startDate) / (1000 * 60 * 60 * 24));
-    
-    if (daysDiff < 3) {
-        // Aún está en el período de 3 días
-        if (maintenanceScreen) maintenanceScreen.classList.remove('hidden');
-        return true;
-    } else {
-        // Ya pasaron 3 días - quitar la pantalla y limpiar
-        if (maintenanceScreen) maintenanceScreen.classList.add('hidden');
-        localStorage.removeItem('maintenance_start_date');
-        return false;
-    }
-}
-
-// Verificar mantenimiento al cargar la página
-window.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => {
-        checkMaintenanceScreen();
-    }, 100);
-});
-
 // 2. CONSTANTES DE ELEMENTOS DOM
 const DOM = {
     canvas: document.getElementById('canvas-bg'),
